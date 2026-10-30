@@ -18,6 +18,7 @@ export default [
     route("links", "routes/links.tsx"),
     route("user/view/:slug", "routes/user.view.tsx"),
     ...devRoutes,
+    route("*", "routes/not-found.tsx"),
   ]),
   route("download/:id", "routes/download.tsx"),
 ] satisfies RouteConfig;

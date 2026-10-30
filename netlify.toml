@@ -1,0 +1,12 @@
+# Server-rendered React Router app. The Vite plugin in vite.config.ts writes the
+# SSR handler as a Netlify Function; build/client holds the static assets.
+#
+# VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY and VITE_SITE_URL must be set under
+# Site configuration → Environment variables. They are read at build time, so
+# redeploy after changing them.
+[build]
+  command = "npm run build"
+  publish = "build/client"
+
+[build.environment]
+  NODE_VERSION = "24"

@@ -12,6 +12,7 @@
     "@fontsource-variable/besley": "^5.3.0",
     "@fontsource-variable/source-sans-3": "^5.3.1",
     "@fontsource-variable/source-serif-4": "^5.3.1",
+    "@netlify/vite-plugin-react-router": "^4.0.0",
     "@react-router/node": "^8.5.1",
     "@react-router/serve": "^8.5.1",
     "@supabase/supabase-js": "^2.118.0",

@@ -1,0 +1,340 @@
+@import "tailwindcss";
+
+/* Self-hosted variable fonts (font-display: swap). See DESIGN.md → Type. */
+@import "@fontsource-variable/besley/wght.css";
+@import "@fontsource-variable/source-serif-4/opsz.css";
+@import "@fontsource-variable/source-serif-4/opsz-italic.css";
+@import "@fontsource-variable/source-sans-3/wght.css";
+
+/* Raw values. Components never use these directly; they use the
+   semantic utilities defined in @theme below. */
+:root {
+  --as-page: oklch(1 0 0);
+  --as-surface: oklch(0.975 0.003 75);
+  --as-hover: oklch(0.955 0.004 75);
+  --as-rule: oklch(0.905 0.005 75);
+  --as-input: oklch(0.5 0.008 75);
+  --as-primary: oklch(0.22 0.006 75);
+  --as-secondary: oklch(0.5 0.008 75);
+  --as-accent: oklch(0.44 0.075 183);
+  --as-on-accent: oklch(1 0 0);
+  --as-accent-tint: oklch(0.955 0.022 180);
+  --as-masthead: oklch(0.31 0.05 185);
+  --as-on-masthead: oklch(1 0 0);
+  --as-on-masthead-muted: oklch(0.955 0.022 180);
+  --as-focus: oklch(0.44 0.075 183);
+  --as-focus-on-masthead: oklch(0.8 0.07 178);
+  --as-error: oklch(0.51 0.17 27);
+
+  --as-wordmark: 2.25rem;
+  --as-display: 2rem;
+  --as-headline-1: 2rem;
+  --as-headline-2: 1.5rem;
+  --as-headline-4: 1.125rem;
+  --as-standfirst: 1.125rem;
+  --as-body: 1.0625rem;
+  --as-quote: 1rem;
+  --as-nav: 1rem;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --as-page: oklch(0.18 0.005 75);
+    --as-surface: oklch(0.215 0.006 75);
+    --as-hover: oklch(0.215 0.006 75);
+    --as-rule: oklch(0.32 0.007 75);
+    --as-input: oklch(0.76 0.007 75);
+    --as-primary: oklch(0.94 0.004 75);
+    --as-secondary: oklch(0.76 0.007 75);
+    --as-accent: oklch(0.8 0.07 178);
+    --as-on-accent: oklch(0.18 0.005 75);
+    --as-accent-tint: oklch(0.215 0.006 75);
+    --as-masthead: oklch(0.25 0.04 185);
+    --as-on-masthead: oklch(0.94 0.004 75);
+    --as-on-masthead-muted: oklch(0.8 0.07 178);
+    --as-focus: oklch(0.74 0.08 178);
+    --as-focus-on-masthead: oklch(0.74 0.08 178);
+    --as-error: oklch(0.74 0.13 27);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --as-wordmark: 3.5rem;
+    --as-display: 2.75rem;
+    --as-headline-1: 2.625rem;
+    --as-headline-2: 1.75rem;
+    --as-headline-4: 1.25rem;
+    --as-standfirst: 1.25rem;
+    --as-body: 1.125rem;
+    --as-quote: 1.0625rem;
+    --as-nav: 1.125rem;
+  }
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-page: var(--as-page);
+  --color-surface: var(--as-surface);
+  --color-hover: var(--as-hover);
+  --color-rule: var(--as-rule);
+  --color-input: var(--as-input);
+  --color-primary: var(--as-primary);
+  --color-secondary: var(--as-secondary);
+  --color-accent: var(--as-accent);
+  --color-on-accent: var(--as-on-accent);
+  --color-accent-tint: var(--as-accent-tint);
+  --color-masthead: var(--as-masthead);
+  --color-on-masthead: var(--as-on-masthead);
+  --color-on-masthead-muted: var(--as-on-masthead-muted);
+  --color-focus: var(--as-focus);
+  --color-focus-on-masthead: var(--as-focus-on-masthead);
+  --color-error: var(--as-error);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-*: initial;
+  --font-slab: "Besley Variable", "Rockwell", "Roboto Slab", Georgia, serif;
+  --font-serif: "Source Serif 4 Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3 Variable", system-ui, "Segoe UI", Arial,
+    sans-serif;
+
+  --text-*: initial;
+  --text-wordmark: var(--as-wordmark);
+  --text-wordmark--line-height: 1;
+  --text-wordmark--font-weight: 800;
+  --text-wordmark--letter-spacing: -0.02em;
+  --text-display: var(--as-display);
+  --text-display--line-height: 1.1;
+  --text-display--font-weight: 700;
+  --text-display--letter-spacing: -0.02em;
+  --text-headline-1: var(--as-headline-1);
+  --text-headline-1--line-height: 1.1;
+  --text-headline-1--font-weight: 700;
+  --text-headline-1--letter-spacing: -0.015em;
+  --text-headline-2: var(--as-headline-2);
+  --text-headline-2--line-height: 1.2;
+  --text-headline-2--font-weight: 600;
+  --text-headline-2--letter-spacing: -0.01em;
+  --text-headline-3: 1.25rem;
+  --text-headline-3--line-height: 1.3;
+  --text-headline-3--font-weight: 600;
+  --text-headline-4: var(--as-headline-4);
+  --text-headline-4--line-height: 1.25;
+  --text-headline-4--font-weight: 600;
+  --text-standfirst: var(--as-standfirst);
+  --text-standfirst--line-height: 1.45;
+  --text-standfirst--font-weight: 500;
+  --text-body: var(--as-body);
+  --text-body--line-height: 1.6;
+  --text-quote: var(--as-quote);
+  --text-quote--line-height: 1.6;
+  --text-footnote: 0.9375rem;
+  --text-footnote--line-height: 1.5;
+  --text-nav: var(--as-nav);
+  --text-nav--line-height: 1.2;
+  --text-nav--font-weight: 700;
+  --text-kicker: 0.9375rem;
+  --text-kicker--line-height: 1.3;
+  --text-kicker--font-weight: 700;
+  --text-byline: 0.9375rem;
+  --text-byline--line-height: 1.4;
+  --text-byline--font-weight: 600;
+  --text-meta: 0.875rem;
+  --text-meta--line-height: 1.4;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-label: 1rem;
+  --text-label--line-height: 1.2;
+  --text-label--font-weight: 600;
+
+  --radius-*: initial;
+  --radius-control: 4px;
+
+  --shadow-*: initial;
+}
+
+@layer base {
+  html {
+    @apply bg-page font-sans text-primary antialiased;
+  }
+
+  body {
+    @apply bg-page;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-position: from-font;
+    text-decoration-thickness: from-font;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0s !important;
+    }
+  }
+}
+
+@utility page-gutter {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1300px;
+  padding-inline: 1rem;
+
+  @media (min-width: 640px) {
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Stored article HTML. Styles the markup as written; the text itself is never
+   altered. Word exports carry inline font and color styles, which would
+   override the design, so those (and only those) are neutralized here. */
+@layer components {
+  .article-body {
+    @apply max-w-[65ch] font-serif text-body text-primary;
+
+    & :where([style], font) {
+      font-family: inherit !important;
+      color: inherit !important;
+      background-color: transparent !important;
+    }
+
+    /* Word sets e.g. font-size:12pt on every paragraph. Headings keep theirs
+       from the rules below. */
+    & :where(p, span, font, div, li, blockquote):where([style], font) {
+      font-size: inherit !important;
+      line-height: inherit !important;
+    }
+
+    & :where(p, ul, ol, blockquote, table, figure, pre) {
+      margin-block: 0 1.25em;
+    }
+
+    & :where(h2) {
+      @apply mt-12 mb-4 font-slab text-headline-2;
+    }
+
+    & :where(h3) {
+      @apply mt-8 mb-3 font-slab text-headline-3;
+    }
+
+    & :where(h4, h5, h6) {
+      @apply mt-8 mb-2 font-serif font-bold;
+    }
+
+    & :where(a) {
+      @apply text-accent underline transition-colors hover:text-primary;
+    }
+
+    & :where(em, i, cite) {
+      font-style: italic;
+    }
+
+    & :where(strong, b) {
+      font-weight: 700;
+    }
+
+    & :where(blockquote) {
+      @apply border-s-[3px] border-rule ps-6 text-quote;
+    }
+
+    & :where(blockquote blockquote) {
+      @apply ms-0;
+    }
+
+    & :where(ul) {
+      @apply list-disc ps-6;
+    }
+
+    & :where(ol) {
+      @apply list-decimal ps-6;
+    }
+
+    & :where(li + li) {
+      margin-top: 0.5em;
+    }
+
+    & :where(hr) {
+      @apply my-12 border-rule;
+    }
+
+    & :where(img, iframe, video) {
+      @apply h-auto max-w-full;
+    }
+
+    & :where(table) {
+      @apply block overflow-x-auto font-sans text-meta;
+    }
+
+    & :where(th, td) {
+      @apply border border-rule px-3 py-2 text-start align-top;
+    }
+
+    /* Footnote references, e.g. <a href="#_ftn1" name="_ftnref1"><sup>[1]</sup></a> */
+    & :where(sup) {
+      font-size: 0.7em;
+      line-height: 0;
+    }
+
+    & :where(a[href^="#_ftn"], a[href^="#_edn"]) {
+      @apply relative font-sans font-semibold no-underline;
+    }
+
+    /* Enlarge the tap target to 44px without moving the text. */
+    & :where(a[href^="#_ftn"], a[href^="#_edn"])::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 44px;
+      height: 44px;
+      translate: -50% -50%;
+    }
+
+    & :where(:target) {
+      @apply bg-accent-tint;
+    }
+
+    /* The footnote list Word appends to the body. */
+    & :where(div[style*="footnote-list"], div[style*="endnote-list"], .footnotes) {
+      @apply mt-12 border-t border-rule bg-surface px-6 py-6 text-footnote;
+
+      & :where(hr, br[clear]) {
+        display: none;
+      }
+
+      & :where(p) {
+        margin-block: 0 0.75em;
+      }
+    }
+  }
+}

@@ -7,17 +7,17 @@ export function PresentationCard({ card }: { card: Card }) {
   const date = formatDate(card.publishedAt);
   return (
     <article className="group relative flex flex-col gap-3">
-      <div className="aspect-video overflow-hidden bg-surface">
+      <div className="relative aspect-video overflow-hidden bg-surface">
         {card.imageUrl && (
           <img
             src={card.imageUrl}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         )}
       </div>
-      {card.series && <p className="text-kicker text-accent">{card.series}</p>}
+      {card.kicker && <p className="text-kicker text-accent">{card.kicker}</p>}
       <h3 className="font-slab text-headline-4">
         <Link
           to={cardHref(card)}

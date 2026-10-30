@@ -1,6 +1,6 @@
 // Placeholder content for the dev-only design previews (/dev/home, /dev/article).
 // Not real articles; never imported by production routes.
-import type { Article, Card } from "~/lib/content";
+import type { Card, Item } from "~/lib/content";
 
 const author = { name: "Sample Author", slug: "sample-author" };
 
@@ -21,13 +21,14 @@ const summary =
   "Placeholder summary. This sentence stands in for the article’s stored summary so the card and standfirst sizes can be judged at a realistic length, roughly two lines on desktop.";
 
 export const sampleArticles: Card[] = titles.map((title, i) => ({
+  id: i + 1,
   type: "article",
   slug: `sample-${i + 1}`,
   title,
   summary,
   publishedAt: new Date(Date.UTC(2024, 4, 19 - i * 3)).toISOString(),
   author: i % 3 === 2 ? null : author,
-  series: i % 2 === 0 ? "Sample series name" : null,
+  kicker: i % 2 === 0 ? "Sample series name" : null,
   imageUrl: null,
 }));
 
@@ -37,24 +38,26 @@ export const sampleBooks: Card[] = [
   "Booklet title",
   "Fourth placeholder book",
 ].map((title, i) => ({
+  id: 100 + i,
   type: "book",
   slug: `sample-book-${i + 1}`,
   title,
   summary,
   publishedAt: null,
   author,
-  series: null,
+  kicker: null,
   imageUrl: null,
 }));
 
 export const samplePresentations: Card[] = [1, 2, 3].map((n) => ({
+  id: 200 + n,
   type: "presentation",
   slug: `sample-presentation-${n}`,
   title: `Placeholder presentation ${n}`,
   summary: null,
   publishedAt: new Date(Date.UTC(2023, 8, n * 7)).toISOString(),
   author,
-  series: "Sample presentation series",
+  kicker: "Sample presentation series",
   imageUrl: null,
 }));
 
@@ -79,7 +82,7 @@ const body = `
 <div style="mso-element:footnote" id="ftn2"><p class="MsoFootnoteText"><a href="#_ftnref2" name="_ftn2" title="">[2]</a> Placeholder footnote two, longer, so that it wraps onto a second line and shows the footnote line height on the surface panel.</p></div>
 </div>`;
 
-export const sampleArticle: Article = {
+export const sampleArticle: Item = {
   ...sampleArticles[0],
   slug: "sample-article",
   body,

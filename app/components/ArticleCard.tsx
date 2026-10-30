@@ -33,7 +33,7 @@ export function ArticleCard({
     <article
       className={`group relative flex h-full flex-col gap-3 pt-3 pb-6 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
     >
-      {card.series && <p className="text-kicker text-accent">{card.series}</p>}
+      {card.kicker && <p className="text-kicker text-accent">{card.kicker}</p>}
       <Heading className={`font-slab ${headline[size]}`}>
         <Link
           to={cardHref(card)}

@@ -16,6 +16,13 @@ export function formatCount(value: number): string {
   return value.toLocaleString("en-US");
 }
 
+// Many summaries are the item's own first paragraph. Showing the summary as a
+// standfirst too would print it twice.
+export function summaryRepeatsBody(summary: string | null, body: string) {
+  const start = stripHtml(summary).slice(0, 120);
+  return start.length > 0 && stripHtml(body).includes(start);
+}
+
 // Removes tags for places that show text only (cards, meta descriptions).
 // The words themselves are left exactly as stored.
 export function stripHtml(html: string | null | undefined): string {

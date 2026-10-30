@@ -236,6 +236,12 @@
       line-height: inherit !important;
     }
 
+    /* Justified text opens uneven gaps at a 65ch measure. Centered and
+       right-aligned lines keep their stored alignment. */
+    & :where([style*="justify"]) {
+      text-align: start !important;
+    }
+
     & :where(p, ul, ol, blockquote, table, figure, pre) {
       margin-block: 0 1.25em;
     }

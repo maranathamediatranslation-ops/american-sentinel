@@ -5,13 +5,13 @@ import { cardHref, type Card } from "~/lib/content";
 export function BookCard({ card }: { card: Card }) {
   return (
     <article className="group relative flex flex-col gap-3">
-      <div className="aspect-[2/3] overflow-hidden bg-surface">
+      <div className="relative aspect-[2/3] overflow-hidden bg-surface">
         {card.imageUrl ? (
           <img
             src={card.imageUrl}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
           // Typographic cover when no image exists.

@@ -1,21 +1,22 @@
 import { Link } from "react-router";
 
 import { Byline } from "./Byline";
-import { cardHref, type Article, type Card } from "~/lib/content";
-import { formatDate } from "~/lib/format";
+import { cardHref, type Card, type Item } from "~/lib/content";
+import { formatDate, summaryRepeatsBody } from "~/lib/format";
 
 type Props = {
-  article: Article;
+  article: Item;
   related: Card[];
 };
 
 export function ArticleView({ article, related }: Props) {
+  const showStandfirst = !summaryRepeatsBody(article.summary, article.body);
   return (
     <article className="page-gutter pt-8 lg:pt-12">
       <header className="flex max-w-[52rem] flex-col gap-4">
-        {article.series && <p className="text-kicker text-accent">{article.series}</p>}
+        {article.kicker && <p className="text-kicker text-accent">{article.kicker}</p>}
         <h1 className="font-slab text-headline-1">{article.title}</h1>
-        {article.summary && (
+        {showStandfirst && article.summary && (
           // Stored summary HTML, rendered as written.
           <div
             className="font-serif text-standfirst text-primary [&_p]:m-0"

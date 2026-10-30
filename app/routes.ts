@@ -9,7 +9,15 @@ const devRoutes =
 export default [
   layout("routes/layout.tsx", [
     index("routes/home.tsx"),
+    route("article/all", "routes/article.all.tsx"),
     route("article/view/:slug", "routes/article.view.tsx"),
+    route("book/all", "routes/book.all.tsx"),
+    route("book/view/:slug", "routes/book.view.tsx"),
+    route("presentation/all", "routes/presentation.all.tsx"),
+    route("presentation/view/:slug", "routes/presentation.view.tsx"),
+    route("links", "routes/links.tsx"),
+    route("user/view/:slug", "routes/user.view.tsx"),
     ...devRoutes,
   ]),
+  route("download/:id", "routes/download.tsx"),
 ] satisfies RouteConfig;

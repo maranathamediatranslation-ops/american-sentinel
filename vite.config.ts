@@ -10,4 +10,17 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  // Pre-bundle the admin's dependencies at startup. Otherwise Vite discovers
+  // them on the first /admin visit and re-bundles mid-session, which can leave
+  // the page with two copies of React ("Cannot read properties of null
+  // (reading 'useContext')").
+  optimizeDeps: {
+    include: [
+      "radix-ui",
+      "lucide-react",
+      "cn",
+      "class-variance-authority",
+      "@supabase/supabase-js",
+    ],
+  },
 });

@@ -5,11 +5,13 @@ import { videoThumbnail, type Presentation } from "~/lib/content";
 type Props = {
   video: Pick<Presentation, "videoProvider" | "videoRef">;
   title: string;
+  // Uploaded image for the presentation; YouTube's thumbnail is the fallback.
+  poster?: string | null;
 };
 
-// Shows the thumbnail first and loads YouTube (privacy-enhanced domain) only
+// Shows the poster first and loads YouTube (privacy-enhanced domain) only
 // when the reader asks for it.
-export function VideoPlayer({ video, title }: Props) {
+export function VideoPlayer({ video, title, poster }: Props) {
   const [playing, setPlaying] = useState(false);
   if (video.videoProvider !== "youtube" || !video.videoRef) return null;
   const id = encodeURIComponent(video.videoRef);
@@ -32,7 +34,7 @@ export function VideoPlayer({ video, title }: Props) {
         >
           {/* YouTube's hqdefault is 4:3 with baked-in bars; cover-cropping to 16:9 removes them. */}
           <img
-            src={videoThumbnail(video) ?? undefined}
+            src={poster ?? videoThumbnail(video) ?? undefined}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />

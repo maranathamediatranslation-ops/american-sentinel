@@ -4,12 +4,14 @@ type Props = {
   title: string;
   id: string;
   more?: { to: string; label: string };
+  // e.g. a series image, shown under the title on wide screens.
+  image?: string | null;
   children: React.ReactNode;
 };
 
 // A homepage section: title column on the left, content on the right,
 // with a rule across the top (DESIGN.md → Layouts → Homepage).
-export function Section({ title, id, more, children }: Props) {
+export function Section({ title, id, more, image, children }: Props) {
   return (
     <section
       aria-labelledby={id}
@@ -26,6 +28,15 @@ export function Section({ title, id, more, children }: Props) {
           >
             {more.label}
           </Link>
+        )}
+        {image && (
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="hidden aspect-video w-full bg-surface object-cover lg:mt-3 lg:block"
+          />
         )}
       </div>
       <div className="lg:col-span-9">{children}</div>

@@ -17,6 +17,11 @@ const titles = [
   "Placeholder headline ten",
 ];
 
+// Thumbnails of the site's own YouTube presentations, to preview image layouts.
+const sampleImages = ["cP4SboyMZVk", "IeHffiOT_hE", "GW400lwRplk", "ahJWi8Lxlb8"].map(
+  (id) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+);
+
 const summary =
   "Placeholder summary. This sentence stands in for the article’s stored summary so the card and standfirst sizes can be judged at a realistic length, roughly two lines on desktop.";
 
@@ -29,7 +34,8 @@ export const sampleArticles: Card[] = titles.map((title, i) => ({
   publishedAt: new Date(Date.UTC(2024, 4, 19 - i * 3)).toISOString(),
   author: i % 3 === 2 ? null : author,
   kicker: i % 2 === 0 ? "Sample series name" : null,
-  imageUrl: null,
+  // Most items have an image; some don't, to check both layouts side by side.
+  imageUrl: i % 3 === 1 ? null : sampleImages[i % sampleImages.length],
 }));
 
 export const sampleBooks: Card[] = [

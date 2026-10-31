@@ -36,28 +36,29 @@
   --as-quote: 1rem;
   --as-nav: 1rem;
 
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --as-page: oklch(0.18 0.005 75);
-    --as-surface: oklch(0.215 0.006 75);
-    --as-hover: oklch(0.215 0.006 75);
-    --as-rule: oklch(0.32 0.007 75);
-    --as-input: oklch(0.76 0.007 75);
-    --as-primary: oklch(0.94 0.004 75);
-    --as-secondary: oklch(0.76 0.007 75);
-    --as-accent: oklch(0.8 0.07 178);
-    --as-on-accent: oklch(0.18 0.005 75);
-    --as-accent-tint: oklch(0.215 0.006 75);
-    --as-masthead: oklch(0.25 0.04 185);
-    --as-on-masthead: oklch(0.94 0.004 75);
-    --as-on-masthead-muted: oklch(0.8 0.07 178);
-    --as-focus: oklch(0.74 0.08 178);
-    --as-focus-on-masthead: oklch(0.74 0.08 178);
-    --as-error: oklch(0.74 0.13 27);
-  }
+/* Dark mode is the reader’s choice (theme switcher in the masthead), not the
+   device setting. The server sets data-theme from the "theme" cookie. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --as-page: oklch(0.18 0.005 75);
+  --as-surface: oklch(0.215 0.006 75);
+  --as-hover: oklch(0.215 0.006 75);
+  --as-rule: oklch(0.32 0.007 75);
+  --as-input: oklch(0.76 0.007 75);
+  --as-primary: oklch(0.94 0.004 75);
+  --as-secondary: oklch(0.76 0.007 75);
+  --as-accent: oklch(0.8 0.07 178);
+  --as-on-accent: oklch(0.18 0.005 75);
+  --as-accent-tint: oklch(0.215 0.006 75);
+  --as-masthead: oklch(0.25 0.04 185);
+  --as-on-masthead: oklch(0.94 0.004 75);
+  --as-on-masthead-muted: oklch(0.8 0.07 178);
+  --as-focus: oklch(0.74 0.08 178);
+  --as-focus-on-masthead: oklch(0.74 0.08 178);
+  --as-error: oklch(0.74 0.13 27);
 }
 
 @media (min-width: 1024px) {

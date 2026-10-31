@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { CardImage } from "./ArticleCard";
 import { Byline } from "./Byline";
 import { cardHref, type Card, type Item } from "~/lib/content";
 import { formatDate, summaryRepeatsBody } from "~/lib/format";
@@ -25,6 +26,12 @@ export function ArticleView({ article, related }: Props) {
         )}
       </header>
 
+      {article.imageUrl && (
+        <figure className="mt-8 max-w-[52rem]">
+          <img src={article.imageUrl} alt="" className="aspect-video w-full object-cover" />
+        </figure>
+      )}
+
       <div className="mt-8 grid gap-x-10 gap-y-8 border-t border-rule pt-4 min-[1140px]:grid-cols-[12rem_minmax(0,65ch)_1fr]">
         <Byline
           author={article.author}
@@ -48,18 +55,21 @@ export function ArticleView({ article, related }: Props) {
               {related.map((card) => {
                 const date = formatDate(card.publishedAt);
                 return (
-                  <li key={card.slug} className="border-b border-rule py-3">
-                    <Link
-                      to={cardHref(card)}
-                      className="font-slab font-semibold underline-offset-4 hover:underline"
-                    >
-                      {card.title}
-                    </Link>
-                    {date && card.publishedAt && (
-                      <p className="mt-1 text-meta text-secondary">
-                        <time dateTime={card.publishedAt}>{date}</time>
-                      </p>
-                    )}
+                  <li key={card.slug} className="flex items-start gap-3 border-b border-rule py-3">
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        to={cardHref(card)}
+                        className="font-slab font-semibold underline-offset-4 hover:underline"
+                      >
+                        {card.title}
+                      </Link>
+                      {date && card.publishedAt && (
+                        <p className="mt-1 text-meta text-secondary">
+                          <time dateTime={card.publishedAt}>{date}</time>
+                        </p>
+                      )}
+                    </div>
+                    <CardImage card={card} className="w-20 shrink-0" />
                   </li>
                 );
               })}

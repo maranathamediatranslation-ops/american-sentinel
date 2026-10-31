@@ -23,24 +23,34 @@ export default function Links({ loaderData }: Route.ComponentProps) {
       {links.length > 0 ? (
         <ul className="max-w-[65ch] border-b border-rule">
           {links.map((link) => (
-            <li key={link.id} className="border-t border-rule py-5">
-              <h2 className="font-slab text-headline-4">
-                <a
-                  href={link.url}
-                  rel="noopener"
-                  className="text-accent underline underline-offset-4 hover:text-primary"
-                >
-                  {link.title}
-                </a>
-              </h2>
-              <p className="mt-1 text-meta break-all text-secondary">{link.url}</p>
-              {link.description && (
-                // Stored description HTML, rendered as written.
-                <div
-                  className="mt-3 font-serif text-quote [&_p]:m-0"
-                  dangerouslySetInnerHTML={{ __html: link.description }}
+            <li key={link.id} className="flex gap-4 border-t border-rule py-5">
+              {link.imageUrl && (
+                <img
+                  src={link.imageUrl}
+                  alt=""
+                  loading="lazy"
+                  className="aspect-video w-28 shrink-0 self-start object-cover sm:w-40"
                 />
               )}
+              <div className="min-w-0">
+                <h2 className="font-slab text-headline-4">
+                  <a
+                    href={link.url}
+                    rel="noopener"
+                    className="text-accent underline underline-offset-4 hover:text-primary"
+                  >
+                    {link.title}
+                  </a>
+                </h2>
+                <p className="mt-1 text-meta break-all text-secondary">{link.url}</p>
+                {link.description && (
+                  // Stored description HTML, rendered as written.
+                  <div
+                    className="mt-3 font-serif text-quote [&_p]:m-0"
+                    dangerouslySetInnerHTML={{ __html: link.description }}
+                  />
+                )}
+              </div>
             </li>
           ))}
         </ul>

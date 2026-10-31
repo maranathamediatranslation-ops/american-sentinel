@@ -9,6 +9,8 @@ const runtimeEnv = typeof process === "undefined" ? undefined : process.env;
 const url = runtimeEnv?.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
 const anonKey = runtimeEnv?.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+export const supabaseUrl = url ?? "";
+
 let browserClient: SupabaseClient<Database> | undefined;
 
 function create() {

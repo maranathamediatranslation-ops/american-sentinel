@@ -20,7 +20,7 @@ Avoid (generic tells): cream backgrounds, ALL-CAPS eyebrow labels, `A · B · C`
 
 ## Color
 
-Defined in `app/app.css` as OKLCH tokens. Components use only the semantic utilities (`bg-page`, `text-secondary`, …), never raw values. Dark mode follows `prefers-color-scheme` only; there is no toggle.
+Defined in `app/app.css` as OKLCH tokens. Components use only the semantic utilities (`bg-page`, `text-secondary`, …), never raw values. Light is the default for every reader, whatever their device setting. Dark mode is the reader's choice: the "Dark mode" toggle in the masthead sets `<html data-theme="dark">` and a `theme` cookie, which the server reads so the chosen theme renders without a flash. (The admin follows the device setting.)
 
 | Token | Light | Dark | Role |
 |---|---|---|---|

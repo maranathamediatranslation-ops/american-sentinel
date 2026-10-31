@@ -1,6 +1,7 @@
 import { data, Link } from "react-router";
 
 import type { Route } from "./+types/presentation.view";
+import { CardImage } from "~/components/ArticleCard";
 import { Byline } from "~/components/Byline";
 import { VideoPlayer } from "~/components/VideoPlayer";
 import { getItem, getPresentation, listSeriesPresentations, paths } from "~/lib/content";
@@ -37,7 +38,11 @@ export default function PresentationPage({ loaderData }: Route.ComponentProps) {
 
       <div className="mt-8 grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="flex flex-col gap-6">
-          {video && <VideoPlayer video={video} title={item.title} />}
+          {video?.videoRef ? (
+            <VideoPlayer video={video} title={item.title} poster={item.imageUrl} />
+          ) : (
+            item.imageUrl && <img src={item.imageUrl} alt="" className="aspect-video w-full object-cover" />
+          )}
           <Byline author={item.author} publishedAt={item.publishedAt} linkAuthor />
           {item.summary && (
             <div
@@ -58,18 +63,24 @@ export default function PresentationPage({ loaderData }: Route.ComponentProps) {
             <ol className="mt-2 list-decimal ps-6 marker:text-meta marker:text-secondary">
               {series.map((card) => (
                 <li key={card.id} className="border-b border-rule py-3">
-                  {card.id === item.id ? (
-                    <span aria-current="page" className="font-slab font-semibold">
-                      {card.title}
-                    </span>
-                  ) : (
-                    <Link
-                      to={paths.presentation(card.slug)}
-                      className="font-slab font-semibold text-accent underline-offset-4 hover:underline"
-                    >
-                      {card.title}
-                    </Link>
-                  )}
+                  {/* Flex on an inner div: on the <li> it would drop the list number. */}
+                  <div className="flex items-start gap-3">
+                    <div className="min-w-0 flex-1">
+                      {card.id === item.id ? (
+                        <span aria-current="page" className="font-slab font-semibold">
+                          {card.title}
+                        </span>
+                      ) : (
+                        <Link
+                          to={paths.presentation(card.slug)}
+                          className="font-slab font-semibold text-accent underline-offset-4 hover:underline"
+                        >
+                          {card.title}
+                        </Link>
+                      )}
+                    </div>
+                    <CardImage card={card} className="w-20 shrink-0" />
+                  </div>
                 </li>
               ))}
             </ol>

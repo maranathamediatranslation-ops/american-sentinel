@@ -25,7 +25,12 @@ export default function Presentations({ loaderData }: Route.ComponentProps) {
       {series.length > 0 ? (
         <div className="flex flex-col gap-16">
           {series.map((group) => (
-            <Section key={group.slug || "other"} id={`series-${group.slug || "other"}`} title={group.title}>
+            <Section
+              key={group.slug || "other"}
+              id={`series-${group.slug || "other"}`}
+              title={group.title}
+              image={group.imageUrl}
+            >
               {/* Series are sequences, so they are ordered lists. */}
               <ol className="grid gap-x-6 gap-y-8 sm:grid-cols-2 md:grid-cols-3">
                 {group.items.map((card) => (

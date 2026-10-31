@@ -5,14 +5,24 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import { themeFromCookie } from "./lib/theme";
+
+// Stylesheets are loaded per area: app.css by routes/layout.tsx (public site),
+// admin.css by routes/admin/*. They define clashing token names.
+
+export function loader({ request }: Route.LoaderArgs) {
+  return { theme: themeFromCookie(request.headers.get("Cookie")) };
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // Undefined when the root loader itself failed; fall back to light.
+  const theme = useRouteLoaderData<typeof loader>("root")?.theme ?? "light";
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

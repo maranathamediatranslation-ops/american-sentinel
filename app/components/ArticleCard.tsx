@@ -14,6 +14,28 @@ type Props = {
   className?: string;
 };
 
+// Book covers are portrait; everything else is cropped to 16:9.
+export function CardImage({
+  card,
+  className = "",
+  eager = false,
+}: {
+  card: Pick<Card, "imageUrl" | "type">;
+  className?: string;
+  eager?: boolean;
+}) {
+  if (!card.imageUrl) return null;
+  return (
+    <img
+      src={card.imageUrl}
+      alt=""
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      className={`${card.type === "book" ? "aspect-[2/3]" : "aspect-video"} bg-surface object-cover ${className}`}
+    />
+  );
+}
+
 const headline = {
   lead: "text-display",
   standard: "text-headline-4",
@@ -29,10 +51,8 @@ export function ArticleCard({
 }: Props) {
   const Heading = headingLevel;
   const summary = size === "compact" ? "" : stripHtml(card.summary);
-  return (
-    <article
-      className={`group relative flex h-full flex-col gap-3 pt-3 pb-6 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
-    >
+  const titleBlock = (
+    <>
       {card.kicker && <p className="text-kicker text-accent">{card.kicker}</p>}
       <Heading className={`font-slab ${headline[size]}`}>
         <Link
@@ -42,6 +62,30 @@ export function ArticleCard({
           {card.title}
         </Link>
       </Heading>
+    </>
+  );
+  return (
+    <article
+      className={`group relative flex h-full flex-col gap-3 pt-3 pb-6 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
+    >
+      {size === "compact" ? (
+        // Side-column cards keep a small thumbnail beside the headline.
+        <div className="flex items-start gap-3">
+          <div className="flex min-w-0 flex-1 flex-col gap-3">{titleBlock}</div>
+          {card.imageUrl && <CardImage card={card} className="w-24 shrink-0" />}
+        </div>
+      ) : (
+        <>
+          {card.imageUrl && (
+            <CardImage
+              card={card}
+              eager={size === "lead"}
+              className={card.type === "book" ? "w-24" : "mb-1 w-full"}
+            />
+          )}
+          {titleBlock}
+        </>
+      )}
       {summary && (
         <p
           className={

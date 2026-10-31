@@ -1,4 +1,5 @@
 import { getSupabase } from "./supabase";
+import { imageUrl } from "./images";
 
 // Column names verified against the live project on 2026-10-30 by reading rows
 // with the anon key. Replace the Row casts with generated types once
@@ -43,6 +44,7 @@ export type LinkRow = {
   title: string;
   url: string;
   description: string | null;
+  imageUrl: string | null;
 };
 
 type Row = Record<string, unknown>;
@@ -61,7 +63,7 @@ function toCard(row: Row): Card {
     publishedAt: str(row.published_at),
     author: authorName ? { name: authorName, slug: str(row.author_slug) } : null,
     kicker: str(row.taxonomy_title),
-    imageUrl: str(row.cover_path),
+    imageUrl: imageUrl(str(row.cover_path)),
   };
 }
 
@@ -201,12 +203,15 @@ export async function listPresentationsBySeries() {
     listCards("presentation"),
     supabase
       .from("presentations")
-      .select("content_id, series_position, video_provider, video_ref, series(slug, title, position)"),
+      .select("content_id, series_position, video_provider, video_ref, series(slug, title, position, image_path)"),
   ]);
   if (rows.error) throw new Error(`presentations: ${rows.error.message}`);
   const byId = new Map((rows.data as Row[]).map((row) => [Number(row.content_id), row]));
 
-  const groups = new Map<string, { slug: string; title: string; position: number; items: (Card & { order: number })[] }>();
+  const groups = new Map<
+    string,
+    { slug: string; title: string; position: number; imageUrl: string | null; items: (Card & { order: number })[] }
+  >();
   for (const card of cards) {
     const row = byId.get(card.id);
     const series = (row?.series ?? null) as Row | null;
@@ -216,6 +221,7 @@ export async function listPresentationsBySeries() {
         slug: key,
         title: series ? String(series.title) : "Other presentations",
         position: series ? (num(series.position) ?? 999) : 1000,
+        imageUrl: series ? imageUrl(str(series.image_path)) : null,
         items: [],
       });
     }
@@ -229,7 +235,8 @@ export async function listPresentationsBySeries() {
 export async function listLinks(): Promise<LinkRow[]> {
   const { data, error } = await getSupabase()
     .from("links")
-    .select("id, title, url, description")
+    // "*" so this works before and after links.image_path is added.
+    .select("*")
     .order("position", { ascending: true, nullsFirst: false });
   if (error) throw new Error(`links: ${error.message}`);
   return (data as Row[]).map((row) => ({
@@ -237,6 +244,7 @@ export async function listLinks(): Promise<LinkRow[]> {
     title: String(row.title ?? ""),
     url: String(row.url ?? ""),
     description: str(row.description),
+    imageUrl: imageUrl(str(row.image_path)),
   }));
 }
 

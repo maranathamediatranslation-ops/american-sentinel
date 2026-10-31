@@ -1,5 +1,7 @@
 import { isRouteErrorResponse, Outlet } from "react-router";
 
+import "~/app.css";
+
 import type { Route } from "./+types/layout";
 import { SiteFooter } from "~/components/SiteFooter";
 import { SiteHeader } from "~/components/SiteHeader";

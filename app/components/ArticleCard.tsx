@@ -50,10 +50,9 @@ export function ArticleCard({
   className = "",
 }: Props) {
   const Heading = headingLevel;
-  const summary = size === "compact" ? "" : stripHtml(card.summary);
   const titleBlock = (
     <>
-      {card.kicker && <p className="text-kicker text-accent">{card.kicker}</p>}
+      {card.kicker && <p className="truncate text-kicker text-accent">{card.kicker}</p>}
       <Heading className={`font-slab ${headline[size]}`}>
         <Link
           to={cardHref(card)}
@@ -64,28 +63,42 @@ export function ArticleCard({
       </Heading>
     </>
   );
+  if (size === "compact") {
+    // Side-column cards keep a thumbnail beside the headline. On phones the
+    // text is packed tight and the thumbnail stretches to its full height.
+    return (
+      <article
+        className={`group relative flex h-full gap-3 py-3 transition-colors hover:bg-hover md:pb-6 ${rule ? "border-t border-rule" : ""} ${className}`}
+      >
+        <div className="flex min-w-0 flex-1 flex-col gap-1 md:gap-3">
+          {titleBlock}
+          <Byline author={card.author} publishedAt={card.publishedAt} className="mt-auto" />
+        </div>
+        {card.imageUrl && (
+          <div className="relative w-36 shrink-0 md:w-24 md:self-start">
+            <CardImage
+              card={card}
+              className="max-md:absolute max-md:inset-0 max-md:size-full md:w-full"
+            />
+          </div>
+        )}
+      </article>
+    );
+  }
+
+  const summary = stripHtml(card.summary);
   return (
     <article
       className={`group relative flex h-full flex-col gap-3 pt-3 pb-6 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
     >
-      {size === "compact" ? (
-        // Side-column cards keep a small thumbnail beside the headline.
-        <div className="flex items-start gap-3">
-          <div className="flex min-w-0 flex-1 flex-col gap-3">{titleBlock}</div>
-          {card.imageUrl && <CardImage card={card} className="w-24 shrink-0" />}
-        </div>
-      ) : (
-        <>
-          {card.imageUrl && (
-            <CardImage
-              card={card}
-              eager={size === "lead"}
-              className={card.type === "book" ? "w-24" : "mb-1 w-full"}
-            />
-          )}
-          {titleBlock}
-        </>
+      {card.imageUrl && (
+        <CardImage
+          card={card}
+          eager={size === "lead"}
+          className={card.type === "book" ? "w-24" : "mb-1 w-full"}
+        />
       )}
+      {titleBlock}
       {summary && (
         <p
           className={

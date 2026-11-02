@@ -16,16 +16,17 @@ export function HomeView({ articles, books, presentations }: Props) {
   const more = rest.slice(3);
 
   return (
-    <div className="page-gutter flex flex-col gap-16 pt-6">
+    <div className="page-gutter flex flex-col gap-10 pt-4 md:gap-16 md:pt-6">
       <h1 className="sr-only">American Sentinel</h1>
 
       <Section
         id="latest"
         title="Latest"
         more={{ to: paths.articles(), label: "All articles" }}
+        hideHeaderOnMobile
       >
         {lead ? (
-          <div className="grid gap-x-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-x-6 md:grid-cols-3">
             <div className="md:col-span-2">
               <ArticleCard card={lead} size="lead" rule={false} />
             </div>
@@ -41,7 +42,7 @@ export function HomeView({ articles, books, presentations }: Props) {
               ))}
             </div>
             {more.length > 0 && (
-              <ul className="grid gap-x-6 md:col-span-3 md:grid-cols-3">
+              <ul className="grid grid-cols-1 gap-x-6 md:col-span-3 md:grid-cols-3">
                 {more.map((card) => (
                   <li key={card.slug}>
                     <ArticleCard card={card} />

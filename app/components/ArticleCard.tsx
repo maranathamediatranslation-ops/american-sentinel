@@ -64,22 +64,19 @@ export function ArticleCard({
     </>
   );
   if (size === "compact") {
-    // Side-column cards keep a thumbnail beside the headline. On phones the
-    // text is packed tight and the thumbnail stretches to its full height.
+    // Side-column cards keep a thumbnail beside the headline, stretched to the
+    // full height of the tightly packed text.
     return (
       <article
-        className={`group relative flex h-full gap-3 py-3 transition-colors hover:bg-hover md:pb-6 ${rule ? "border-t border-rule" : ""} ${className}`}
+        className={`group relative flex h-full gap-3 py-3 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
       >
-        <div className="flex min-w-0 flex-1 flex-col gap-1 md:gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
           {titleBlock}
           <Byline author={card.author} publishedAt={card.publishedAt} className="mt-auto" />
         </div>
         {card.imageUrl && (
-          <div className="relative w-36 shrink-0 md:w-24 md:self-start">
-            <CardImage
-              card={card}
-              className="max-md:absolute max-md:inset-0 max-md:size-full md:w-full"
-            />
+          <div className="relative w-36 shrink-0 md:w-48 xl:w-32">
+            <CardImage card={card} className="absolute inset-0 size-full" />
           </div>
         )}
       </article>

@@ -6,7 +6,7 @@ type Props = {
   more?: { to: string; label: string };
   // e.g. a series image, shown under the title on wide screens.
   image?: string | null;
-  // Drop the title row on phones, where the content speaks for itself.
+  // Drop the title row below desktop, where the content speaks for itself.
   hideHeaderOnMobile?: boolean;
   children: React.ReactNode;
 };
@@ -20,7 +20,7 @@ export function Section({ title, id, more, image, hideHeaderOnMobile = false, ch
       className="grid grid-cols-1 gap-x-6 gap-y-4 border-t border-rule pt-3 lg:grid-cols-12"
     >
       <div
-        className={`${hideHeaderOnMobile ? "hidden md:flex" : "flex"} items-baseline justify-between gap-4 lg:col-span-3 lg:flex-col lg:justify-start`}
+        className={`${hideHeaderOnMobile ? "hidden lg:flex" : "flex"} items-baseline justify-between gap-4 lg:col-span-3 lg:flex-col lg:justify-start`}
       >
         <h2 id={id} className="font-slab text-headline-2">
           {title}

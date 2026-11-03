@@ -7,7 +7,8 @@ import { stripHtml } from "~/lib/format";
 type Props = {
   card: Card;
   // "lead" is the first story on the homepage; "compact" drops the summary.
-  size?: "lead" | "standard" | "compact";
+  // "small": image on top, headline and byline only (homepage Popular column).
+  size?: "lead" | "standard" | "small" | "compact";
   headingLevel?: "h2" | "h3";
   // Off for cards that sit directly under a section rule, to avoid a double line.
   rule?: boolean;
@@ -39,6 +40,7 @@ export function CardImage({
 const headline = {
   lead: "text-display",
   standard: "text-headline-4",
+  small: "text-headline-4",
   compact: "text-headline-4",
 };
 
@@ -64,8 +66,10 @@ export function ArticleCard({
     </>
   );
   if (size === "compact") {
-    // Side-column cards keep a thumbnail beside the headline, stretched to the
-    // full height of the tightly packed text.
+    // Side-column cards keep a thumbnail beside the headline. Below xl it
+    // stretches to the height of the text (the cards are wide, so it stays
+    // landscape). From xl the column is narrow and the text tall, so the
+    // thumbnail keeps a fixed 16:9 shape instead of turning portrait.
     return (
       <article
         className={`group relative flex h-full gap-3 py-3 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
@@ -75,7 +79,7 @@ export function ArticleCard({
           <Byline author={card.author} publishedAt={card.publishedAt} className="mt-auto" />
         </div>
         {card.imageUrl && (
-          <div className="relative w-36 shrink-0 md:w-48 xl:w-32">
+          <div className="relative w-36 shrink-0 md:w-48 xl:aspect-video xl:w-32 xl:self-start 2xl:w-40">
             <CardImage card={card} className="absolute inset-0 size-full" />
           </div>
         )}
@@ -83,10 +87,10 @@ export function ArticleCard({
     );
   }
 
-  const summary = stripHtml(card.summary);
+  const summary = size === "small" ? "" : stripHtml(card.summary);
   return (
     <article
-      className={`group relative flex h-full flex-col gap-3 pt-3 pb-6 transition-colors hover:bg-hover ${rule ? "border-t border-rule" : ""} ${className}`}
+      className={`group relative flex h-full flex-col gap-3 pt-3 transition-colors hover:bg-hover ${size === "small" ? "pb-4" : "pb-6"} ${rule ? "border-t border-rule" : ""} ${className}`}
     >
       {card.imageUrl && (
         <CardImage

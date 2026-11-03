@@ -122,6 +122,20 @@ export async function listCards(type: ContentType, limit?: number) {
   return type === "presentation" ? withPresentationData(cards) : cards;
 }
 
+// Most-read items by view count. Editors can keep an item out of this list
+// with content_items.exclude_from_most_read.
+export async function listPopular(type: ContentType, limit: number) {
+  const { data, error } = await getSupabase()
+    .from("content_cards")
+    .select("*")
+    .eq("type", type)
+    .eq("exclude_from_most_read", false)
+    .order("view_count", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`content_cards popular (${type}): ${error.message}`);
+  return (data as Row[]).map(toCard);
+}
+
 // The body comes from content_items; author and category come from the
 // content_cards view, which already joins them.
 export async function getItem(type: ContentType, slug: string): Promise<Item | null> {

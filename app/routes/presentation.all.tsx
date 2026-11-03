@@ -32,7 +32,7 @@ export default function Presentations({ loaderData }: Route.ComponentProps) {
               image={group.imageUrl}
             >
               {/* Series are sequences, so they are ordered lists. */}
-              <ol className="grid gap-x-6 gap-y-8 sm:grid-cols-2 md:grid-cols-3">
+              <ol className="grid gap-x-6 gap-y-8 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4">
                 {group.items.map((card) => (
                   <li key={card.id}>
                     {/* Kicker would repeat the section title. */}

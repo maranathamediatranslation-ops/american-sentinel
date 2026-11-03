@@ -8,6 +8,11 @@ export function meta() {
 
 export default function DevHome() {
   return (
-    <HomeView articles={sampleArticles} books={sampleBooks} presentations={samplePresentations} />
+    <HomeView
+      articles={sampleArticles}
+      popular={sampleArticles.slice(5)}
+      books={sampleBooks}
+      presentations={samplePresentations}
+    />
   );
 }

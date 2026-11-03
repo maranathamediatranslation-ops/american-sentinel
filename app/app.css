@@ -202,10 +202,10 @@
   }
 }
 
+/* Full width at every size; long-form text keeps its own 65ch measure. */
 @utility page-gutter {
   margin-inline: auto;
   width: 100%;
-  max-width: 1300px;
   padding-inline: 1rem;
 
   @media (min-width: 640px) {
@@ -214,6 +214,14 @@
 
   @media (min-width: 1024px) {
     padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 1536px) {
+    padding-inline: 3rem;
   }
 }
 

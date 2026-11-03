@@ -22,7 +22,7 @@ export default function Books({ loaderData }: Route.ComponentProps) {
     <div className="page-gutter">
       <PageHeader title="Books" />
       {books.length > 0 ? (
-        <ul className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
           {books.map((card) => (
             <li key={card.id}>
               <BookCard card={card} />

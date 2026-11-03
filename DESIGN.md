@@ -106,7 +106,9 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 
 ## Layouts
 
-**Homepage.** Sections stacked, each with a title column (3 of 12) and cards (9 of 12), a 1px rule on top. The first section's lead card spans the widest column with `text-display`. On phones the title sits above its cards in one column.
+**Homepage.** A hero first, then sections stacked, each with a title column (3 of 12) and cards (9 of 12), a 1px rule on top. On phones the title sits above its cards in one column.
+
+**Homepage hero.** Three columns from 1280px, 1 : 2 : 1 — Popular (left: the 2 most-read articles by `view_count`, excluding `exclude_from_most_read` and the lead; image on top, headline, byline) · lead story (centre: newest article, image, `text-display`, standfirst) · Latest (right: the next 5 newest, headlines only, no images). 768–1279px: lead full width, Popular and Latest side by side below. Phones: lead, Popular, Latest stacked in that order (also the source order; columns are placed with `order` on wide screens).
 
 **Article page.** Kicker, H1, standfirst full width. From 1140px: byline column (left) · body at 65ch · "More in this series" rail (right). Below 1140px the byline sits under the standfirst and the rail moves below the article. Footnotes on `surface` after the body.
 

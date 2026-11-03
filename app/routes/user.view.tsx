@@ -47,7 +47,7 @@ export default function PersonPage({ loaderData }: Route.ComponentProps) {
         )}
       </PageHeader>
       {items.length > 0 ? (
-        <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {items.map((item) => (
             <li key={item.id}>
               <ArticleCard

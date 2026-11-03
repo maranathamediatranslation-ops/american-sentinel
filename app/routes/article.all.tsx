@@ -22,7 +22,7 @@ export default function Articles({ loaderData }: Route.ComponentProps) {
     <div className="page-gutter">
       <PageHeader title="Articles" />
       {articles.length > 0 ? (
-        <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
           {articles.map((card) => (
             <li key={card.id}>
               <ArticleCard card={card} headingLevel="h2" />

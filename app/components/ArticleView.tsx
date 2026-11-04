@@ -14,30 +14,30 @@ export function ArticleView({ article, related }: Props) {
   const showStandfirst = !summaryRepeatsBody(article.summary, article.body);
   return (
     <article className="page-gutter pt-8 lg:pt-12">
-      <header className="flex max-w-[52rem] flex-col gap-4">
+      <header className="mx-auto flex max-w-[65ch] flex-col gap-4 min-[1140px]:max-w-[76rem]">
         {article.kicker && <p className="text-kicker text-accent">{article.kicker}</p>}
         <h1 className="font-slab text-headline-1">{article.title}</h1>
         {showStandfirst && article.summary && (
           // Stored summary HTML, rendered as written.
           <div
-            className="font-serif text-standfirst text-primary [&_p]:m-0"
+            className="max-w-[52rem] font-serif text-standfirst text-primary [&_p]:m-0"
             dangerouslySetInnerHTML={{ __html: article.summary }}
           />
         )}
       </header>
 
       {article.imageUrl && (
-        <figure className="mt-8 max-w-[52rem]">
+        <figure className="mx-auto mt-8 max-w-[52rem] min-[1140px]:max-w-[76rem]">
           <img src={article.imageUrl} alt="" className="aspect-video w-full object-cover" />
         </figure>
       )}
 
-      <div className="mt-8 grid gap-x-10 gap-y-8 border-t border-rule pt-4 min-[1140px]:grid-cols-[12rem_minmax(0,65ch)_1fr]">
+      <div className="mx-auto mt-8 grid max-w-[65ch] gap-x-10 gap-y-8 border-t border-rule pt-4 min-[1140px]:max-w-[76rem] min-[1140px]:grid-cols-[minmax(15rem,1fr)_minmax(0,42rem)_minmax(15rem,1fr)]">
         <Byline
           author={article.author}
           publishedAt={article.publishedAt}
           linkAuthor
-          className="flex flex-col gap-1"
+          className="flex flex-col gap-1 min-[1140px]:justify-self-end min-[1140px]:text-right"
         />
 
         {/* Stored article HTML, rendered exactly as written. */}

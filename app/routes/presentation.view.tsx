@@ -29,63 +29,66 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export default function PresentationPage({ loaderData }: Route.ComponentProps) {
   const { item, video, series } = loaderData;
+  const hasRail = series.length > 1 && video?.series;
   return (
     <article className="page-gutter pt-8 lg:pt-12">
-      <header className="flex max-w-[52rem] flex-col gap-4">
-        {video?.series && <p className="text-kicker text-accent">{video.series.title}</p>}
-        <h1 className="font-slab text-headline-1">{item.title}</h1>
-      </header>
+      <div className={`mx-auto ${hasRail ? "max-w-[76rem]" : "max-w-[52rem] min-[1140px]:max-w-[76rem]"}`}>
+        <header className="flex max-w-[52rem] flex-col gap-4">
+          {video?.series && <p className="text-kicker text-accent">{video.series.title}</p>}
+          <h1 className="font-slab text-headline-1">{item.title}</h1>
+        </header>
 
-      <div className="mt-8 grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="flex flex-col gap-6">
-          {video?.videoRef ? (
-            <VideoPlayer video={video} title={item.title} poster={item.imageUrl} />
-          ) : (
-            item.imageUrl && <img src={item.imageUrl} alt="" className="aspect-video w-full object-cover" />
-          )}
-          <Byline author={item.author} publishedAt={item.publishedAt} linkAuthor />
-          {item.summary && (
-            <div
-              className="article-body"
-              dangerouslySetInnerHTML={{ __html: item.summary }}
-            />
-          )}
-          {item.body && (
-            <div className="article-body" dangerouslySetInnerHTML={{ __html: item.body }} />
+        <div className={`mt-8 grid gap-x-10 gap-y-8 ${hasRail ? "lg:grid-cols-[minmax(0,1fr)_20rem]" : ""}`}>
+          <div className="flex flex-col gap-6">
+            {video?.videoRef ? (
+              <VideoPlayer video={video} title={item.title} poster={item.imageUrl} />
+            ) : (
+              item.imageUrl && <img src={item.imageUrl} alt="" className="aspect-video w-full object-cover" />
+            )}
+            <Byline author={item.author} publishedAt={item.publishedAt} linkAuthor />
+            {item.summary && (
+              <div
+                className="article-body"
+                dangerouslySetInnerHTML={{ __html: item.summary }}
+              />
+            )}
+            {item.body && (
+              <div className="article-body" dangerouslySetInnerHTML={{ __html: item.body }} />
+            )}
+          </div>
+
+          {hasRail && video?.series && (
+            <aside aria-labelledby="series">
+              <h2 id="series" className="border-t border-rule pt-3 font-slab text-headline-4">
+                {video.series.title}
+              </h2>
+              <ol className="mt-2 list-decimal ps-6 marker:text-meta marker:text-secondary">
+                {series.map((card) => (
+                  <li key={card.id} className="border-b border-rule py-3">
+                    {/* Flex on an inner div: on the <li> it would drop the list number. */}
+                    <div className="flex items-start gap-3">
+                      <div className="min-w-0 flex-1">
+                        {card.id === item.id ? (
+                          <span aria-current="page" className="font-slab font-semibold">
+                            {card.title}
+                          </span>
+                        ) : (
+                          <Link
+                            to={paths.presentation(card.slug)}
+                            className="font-slab font-semibold text-accent underline-offset-4 hover:underline"
+                          >
+                            {card.title}
+                          </Link>
+                        )}
+                      </div>
+                      <CardImage card={card} className="w-20 shrink-0" />
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </aside>
           )}
         </div>
-
-        {series.length > 1 && video?.series && (
-          <aside aria-labelledby="series">
-            <h2 id="series" className="border-t border-rule pt-3 font-slab text-headline-4">
-              {video.series.title}
-            </h2>
-            <ol className="mt-2 list-decimal ps-6 marker:text-meta marker:text-secondary">
-              {series.map((card) => (
-                <li key={card.id} className="border-b border-rule py-3">
-                  {/* Flex on an inner div: on the <li> it would drop the list number. */}
-                  <div className="flex items-start gap-3">
-                    <div className="min-w-0 flex-1">
-                      {card.id === item.id ? (
-                        <span aria-current="page" className="font-slab font-semibold">
-                          {card.title}
-                        </span>
-                      ) : (
-                        <Link
-                          to={paths.presentation(card.slug)}
-                          className="font-slab font-semibold text-accent underline-offset-4 hover:underline"
-                        >
-                          {card.title}
-                        </Link>
-                      )}
-                    </div>
-                    <CardImage card={card} className="w-20 shrink-0" />
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </aside>
-        )}
       </div>
     </article>
   );

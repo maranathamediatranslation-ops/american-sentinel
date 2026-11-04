@@ -230,7 +230,7 @@
    override the design, so those (and only those) are neutralized here. */
 @layer components {
   .article-body {
-    @apply max-w-[65ch] font-serif text-body text-primary;
+    @apply max-w-[65ch] font-serif text-body text-primary min-[1140px]:max-w-[42rem];
 
     & :where([style], font) {
       font-family: inherit !important;

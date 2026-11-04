@@ -88,7 +88,7 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 | Caption | `text-caption` | Source Sans | 0.8125rem | 1.4 | 400 |
 | Button / label | `text-label` | Source Sans | 1rem | 1.2 | 600 |
 
-- Article body measure: `max-w-[65ch]`.
+- Article body measure: `max-w-[65ch]`, widening to `42rem` from 1140px.
 - Headlines `text-wrap: balance`; paragraphs `text-wrap: pretty`.
 - Article parts (styled in `.article-body`, wording untouched):
   - Block quote: 1.5em inset, 3px `rule` border on the start side, `text-quote`.
@@ -110,9 +110,9 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 
 **Homepage hero.** Three columns from 1280px, 1 : 2 : 1 — Popular (left: the 2 most-read articles by `view_count`, excluding `exclude_from_most_read` and the lead; image on top, headline, byline) · lead story (centre: newest article, image, `text-display`, standfirst) · Latest (right: the next 5 newest, headlines only, no images). 768–1279px: lead full width, Popular and Latest side by side below. Phones: lead, Popular, Latest stacked in that order (also the source order; columns are placed with `order` on wide screens).
 
-**Article page.** Kicker, H1, standfirst full width. From 1140px: byline column (left) · body at 65ch · "More in this series" rail (right). Below 1140px the byline sits under the standfirst and the rail moves below the article. Footnotes on `surface` after the body.
+**Article page.** Centred on the page. Below 1140px: kicker, H1, standfirst at 65ch, lead image up to 52rem. From 1140px everything shares a 76rem width (standfirst capped at 52rem). From 1140px: byline column (left) · body up to 42rem, on the page's centre line · "More in this series" rail (right). Below 1140px the byline sits under the standfirst and the rail moves below the article. Footnotes on `surface` after the body.
 
-**Book page.** Cover (2:3) beside title, author, summary, then actions: "Download PDF" (the filled `accent` button) and "Download audiobook" (outlined), then pages, size and download count (`tabular-nums`). Description below at 65ch.
+**Book page.** Centred on the page as one block, 76rem wide from 1140px. Cover (2:3) beside title, author, summary, then actions: "Download PDF" (the filled `accent` button) and "Download audiobook" (outlined), then pages, size and download count (`tabular-nums`). Description below at the article body measure.
 
 **Series page.** Title, description, count. A click-to-load YouTube player (thumbnail first, `youtube-nocookie.com` only on click). Presentations in an `<ol>` with part number, 16:9 thumbnail, title, date, duration. Numbering is used here because a series is a sequence.
 

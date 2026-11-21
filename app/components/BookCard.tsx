@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import { cardHref, type Card } from "~/lib/content";
+import { focusStyle } from "~/lib/images";
 
 export function BookCard({ card }: { card: Card }) {
   return (
@@ -10,6 +11,7 @@ export function BookCard({ card }: { card: Card }) {
           <img
             src={card.imageUrl}
             alt=""
+            style={focusStyle(card.imageUrl)}
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
           />

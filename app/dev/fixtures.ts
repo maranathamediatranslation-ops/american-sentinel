@@ -1,5 +1,6 @@
 // Placeholder content for the dev-only design previews (/dev/home, /dev/article).
 // Not real articles; never imported by production routes.
+import type { Ad } from "~/lib/ads";
 import type { Card, Item } from "~/lib/content";
 
 const author = { name: "Sample Author", slug: "sample-author" };
@@ -93,3 +94,36 @@ export const sampleArticle: Item = {
   slug: "sample-article",
   body,
 };
+
+// Placeholder ads for previewing the ad slots (`?sample-ads` on any page in
+// `npm run dev`). Placeholder images from placehold.co; one ad-network slot
+// runs a script, to check that embedded code executes.
+const placeholder = (w: number, h: number, text: string) =>
+  `https://placehold.co/${w}x${h}/e2dfdc/1c1a18/png?text=${encodeURIComponent(text)}`;
+
+export const sampleAds: Ad[] = [
+  { slot: "left_top", text: "Left top" },
+  { slot: "left_bottom", text: "Left bottom" },
+  { slot: "right_top", text: "Right top" },
+].map(({ slot, text }, i): Ad => ({
+  id: 9000 + i,
+  kind: "image",
+  slot: slot as Ad["slot"],
+  imageUrl: placeholder(320, 600, `${text}\n320×600`),
+  bannerUrl: i === 0 ? placeholder(970, 250, `${text} banner 970×250`) : null,
+  linkUrl: "https://example.com/",
+  alt: `Sample ad, ${text.toLowerCase()}`,
+  embedHtml: null,
+  pages: [],
+})).concat([{
+  id: 9100,
+  kind: "embed",
+  slot: "right_bottom",
+  imageUrl: null,
+  bannerUrl: null,
+  linkUrl: null,
+  alt: "",
+  embedHtml:
+    '<div data-sample-embed style="border:1px dashed #66635e;padding:12px;font:14px sans-serif">Ad network slot</div><script>document.querySelectorAll("[data-sample-embed]").forEach(function(el){el.textContent="Ad network code ran"})</script>',
+  pages: [],
+}]);

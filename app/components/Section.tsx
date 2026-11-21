@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { focusStyle } from "~/lib/images";
 
 type Props = {
   title: string;
@@ -33,6 +34,7 @@ export function Section({ title, id, more, image, children }: Props) {
           <img
             src={image}
             alt=""
+            style={focusStyle(image)}
             loading="lazy"
             decoding="async"
             className="hidden aspect-video w-full bg-surface object-cover lg:mt-3 lg:block"

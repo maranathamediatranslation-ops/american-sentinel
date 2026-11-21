@@ -1,6 +1,8 @@
 import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes";
 
 // Design previews with placeholder data, available only in `npm run dev`.
+const devAdminRoutes =
+  process.env.NODE_ENV === "production" ? [] : [route("dev/admin-editor", "routes/dev.admin-editor.tsx")];
 const devRoutes =
   process.env.NODE_ENV === "production"
     ? []
@@ -21,6 +23,7 @@ export default [
     route("*", "routes/not-found.tsx"),
   ]),
   route("download/:id", "routes/download.tsx"),
+  ...devAdminRoutes,
 
   // Admin: client-only, outside the public layout.
   ...prefix("admin", [
@@ -31,6 +34,9 @@ export default [
       route("links", "routes/admin/links.tsx"),
       route("links/new", "routes/admin/link-edit.tsx", { id: "admin-link-new" }),
       route("links/:id", "routes/admin/link-edit.tsx"),
+      route("ads", "routes/admin/ads.tsx"),
+      route("ads/new", "routes/admin/ad-edit.tsx", { id: "admin-ad-new" }),
+      route("ads/:id", "routes/admin/ad-edit.tsx"),
       route(":section", "routes/admin/content-list.tsx"),
       route(":section/new", "routes/admin/content-edit.tsx", { id: "admin-content-new" }),
       route(":section/:id", "routes/admin/content-edit.tsx"),

@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { Byline } from "./Byline";
 import { cardHref, type Card } from "~/lib/content";
 import { stripHtml } from "~/lib/format";
+import { focusStyle } from "~/lib/images";
 
 type Props = {
   card: Card;
@@ -30,6 +31,7 @@ export function CardImage({
     <img
       src={card.imageUrl}
       alt=""
+      style={focusStyle(card.imageUrl)}
       loading={eager ? "eager" : "lazy"}
       decoding="async"
       className={`${card.type === "book" ? "aspect-[2/3]" : "aspect-video"} bg-surface object-cover ${className}`}

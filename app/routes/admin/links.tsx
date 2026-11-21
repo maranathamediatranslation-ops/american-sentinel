@@ -5,7 +5,7 @@ import type { Route } from "./+types/links";
 import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { listLinks } from "~/lib/admin";
-import { imageUrl } from "~/lib/images";
+import { focusStyle, imageUrl } from "~/lib/images";
 
 export async function clientLoader() {
   return { links: await listLinks() };
@@ -45,7 +45,7 @@ export default function AdminLinks({ loaderData }: Route.ComponentProps) {
                     <TableCell>
                       <div className="relative aspect-video w-16 overflow-hidden rounded bg-muted">
                         {src ? (
-                          <img src={src} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                          <img src={src} alt="" loading="lazy" style={focusStyle(src)} className="absolute inset-0 h-full w-full object-cover" />
                         ) : (
                           <ImageIcon aria-label="No image" className="absolute inset-0 m-auto size-4 text-muted-foreground" />
                         )}

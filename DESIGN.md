@@ -73,13 +73,13 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 |---|---|---|---|---|---|
 | Wordmark | `text-wordmark` | Besley | 2.25 → 3.5rem | 1 | 800 |
 | Lead headline | `text-display` | Besley | 2 → 2.75rem | 1.1 | 700, −0.02em |
-| Article H1 | `text-headline-1` | Besley | 2 → 2.625rem | 1.1 | 700, −0.015em |
-| Section title, lead card, article H2 | `text-headline-2` | Besley | 1.5 → 1.75rem | 1.2 | 600, −0.01em |
+| Article H1 | `text-headline-1` | Besley | 1.75 → 2.25rem | 1.1 | 700, −0.015em |
+| Section title, lead card, article H2 | `text-headline-2` | Besley | 1.5rem | 1.2 | 600, −0.01em |
 | Article H3 | `text-headline-3` | Besley | 1.25rem | 1.3 | 600 |
 | Card headline | `text-headline-4` | Besley | 1.125 → 1.25rem | 1.25 | 600 |
-| Standfirst | `text-standfirst` | Source Serif | 1.125 → 1.25rem | 1.45 | 500 |
-| Body | `text-body` | Source Serif | 1.0625 → 1.125rem | 1.6 | 400 |
-| Block quote | `text-quote` | Source Serif | 1 → 1.0625rem | 1.6 | 400 |
+| Standfirst | `text-standfirst` | Source Serif | 1.125rem | 1.45 | 500 |
+| Body | `text-body` | Source Serif | 1.0625rem | 1.6 | 400 |
+| Block quote | `text-quote` | Source Serif | 1rem | 1.6 | 400 |
 | Footnote | `text-footnote` | Source Serif | 0.9375rem | 1.5 | 400 |
 | Nav | `text-nav` | Source Sans | 1 → 1.125rem | 1.2 | 700 |
 | Kicker | `text-kicker` | Source Sans | 0.9375rem | 1.3 | 700, accent, sentence case |
@@ -101,6 +101,7 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 - Spacing steps: 4, 8, 12, 16, 24, 32, 48, 64, 96px (Tailwind `1, 2, 3, 4, 6, 8, 12, 16, 24`).
 - Page: `max-w-[1300px]`, gutters 16px / 20px (≥ 640) / 24px (≥ 1024).
 - Columns: 4 on phones, 12 from 1024px.
+- Cropped images (`object-cover`) use the focal point the editor set in the admin (`focusStyle(url)` from `app/lib/images.ts`), so the important part stays in view in every crop.
 - Radius: 0 on cards, images and sections; 4px (`rounded-control`) on buttons and inputs.
 - Rules: 1px `rule` between sections and cards. No shadows.
 
@@ -110,7 +111,9 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 
 **Homepage hero.** Three columns from 1280px, 1 : 2 : 1 — Popular (left: the 2 most-read articles by `view_count`, excluding `exclude_from_most_read` and the lead; image on top, headline, byline) · lead story (centre: newest article, image, `text-display`, standfirst) · Latest (right: the next 5 newest, headlines only, no images). 768–1279px: lead full width, Popular and Latest side by side below. Phones: lead, Popular, Latest stacked in that order (also the source order; columns are placed with `order` on wide screens).
 
-**Article page.** Centred on the page. Below 1140px: kicker, H1, standfirst at 65ch, lead image up to 52rem. From 1140px everything shares a 76rem width (standfirst capped at 52rem). From 1140px: byline column (left) · body up to 42rem, on the page's centre line · "More in this series" rail (right). Below 1140px the byline sits under the standfirst and the rail moves below the article. Footnotes on `surface` after the body.
+**Article page.** Centred on the page as one block: up to 52rem below 1140px, 68rem from 1140px. Header, lead image and body share that width and one left edge. Kicker, H1 (pretty wrapping, not balance, so it fills the width), standfirst and byline (author, then date, under a 1px rule) all span the full width, the same as the lead image. Lead image full width. Below it, two columns from 1140px with a 48px gap: body (up to 42rem) · "More articles" sidebar (the rest, at least 18rem), which stays in view (sticky, 24px from the top) while the body scrolls. Below 1140px the body keeps the 65ch measure and the sidebar moves below the article. Sidebar rows: headline (clamped to 2 lines, shown in full on hover or focus) and author name, with a square thumbnail on the right. Footnotes on `surface` after the body.
+
+**Ads.** Four slots: left top/bottom, right top/bottom (table `ads`, managed in the admin). From 1440px they sit in 160px rails beside the page, sticky, each at most half the screen's height, images never cropped. Below 1440px they move into the page: between Books and Presentations on the homepage (aligned to the section grid), the left top ad under "More articles" on article pages with the rest above the footer, and a row above the footer elsewhere. Each ad carries an "Advertisement" label in `text-caption text-secondary`. No borders, shadows or animation; hover dims the image slightly.
 
 **Book page.** Centred on the page as one block, 76rem wide from 1140px. Cover (2:3) beside title, author, summary, then actions: "Download PDF" (the filled `accent` button) and "Download audiobook" (outlined), then pages, size and download count (`tabular-nums`). Description below at the article body measure.
 
@@ -118,4 +121,4 @@ Self-hosted variable woff2 via `@fontsource-variable/*` (`font-display: swap`).
 
 ## Motion
 
-None on load. Hover and focus change color only, `transition-colors` at 150ms, disabled under `prefers-reduced-motion`. No smooth scrolling under reduced motion.
+None on load. Hover and focus change color only (one exception: a clamped sidebar headline expands to full length on hover or focus), `transition-colors` at 150ms, disabled under `prefers-reduced-motion`. No smooth scrolling under reduced motion.

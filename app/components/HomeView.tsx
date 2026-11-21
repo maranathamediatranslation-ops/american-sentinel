@@ -1,3 +1,4 @@
+import { AdRow, usePageAds } from "./Ads";
 import { ArticleCard } from "./ArticleCard";
 import { BookCard } from "./BookCard";
 import { PresentationCard } from "./PresentationCard";
@@ -16,6 +17,7 @@ export function HomeView({ articles, popular, books, presentations }: Props) {
   const latest = rest.slice(0, 5);
   // The lead is already the biggest story; don't repeat it under Popular.
   const mostRead = popular.filter((card) => card.id !== lead?.id).slice(0, 2);
+  const ads = usePageAds();
 
   return (
     <div className="page-gutter flex flex-col gap-10 pt-4 lg:gap-12 lg:pt-6">
@@ -78,6 +80,9 @@ export function HomeView({ articles, popular, books, presentations }: Props) {
           </ul>
         </Section>
       )}
+
+      {/* Below the rail width, the side ads sit between sections. */}
+      <AdRow ads={[ads.left_top, ads.right_top, ads.left_bottom, ads.right_bottom]} sectioned />
 
       {presentations.length > 0 && (
         <Section

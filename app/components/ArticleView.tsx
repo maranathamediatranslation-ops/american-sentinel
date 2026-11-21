@@ -1,81 +1,139 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 
-import { CardImage } from "./ArticleCard";
+import { AdStack, usePageAds } from "./Ads";
 import { Byline } from "./Byline";
 import { cardHref, type Card, type Item } from "~/lib/content";
-import { formatDate, summaryRepeatsBody } from "~/lib/format";
+import { summaryRepeatsBody } from "~/lib/format";
+import { focusStyle } from "~/lib/images";
 
 type Props = {
   article: Item;
   related: Card[];
 };
 
+// The sidebar sticks 24px from the top. When it's taller than the screen
+// (e.g. with an ad under the list), it sticks by its bottom edge instead, so
+// all of it can still be seen while the article scrolls.
+function useStickySidebar() {
+  const ref = useRef<HTMLElement>(null);
+  const [top, setTop] = useState(24);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => setTop(Math.min(24, window.innerHeight - el.offsetHeight - 24));
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return { ref, top };
+}
+
+// Body and sidebar columns, from 1140px.
+const columns =
+  "min-[1140px]:grid min-[1140px]:grid-cols-[minmax(0,42rem)_minmax(18rem,1fr)] min-[1140px]:gap-x-12";
+
 export function ArticleView({ article, related }: Props) {
   const showStandfirst = !summaryRepeatsBody(article.summary, article.body);
+  const ads = usePageAds();
+  const sidebar = useStickySidebar();
   return (
     <article className="page-gutter pt-8 lg:pt-12">
-      <header className="mx-auto flex max-w-[65ch] flex-col gap-4 min-[1140px]:max-w-[76rem]">
-        {article.kicker && <p className="text-kicker text-accent">{article.kicker}</p>}
-        <h1 className="font-slab text-headline-1">{article.title}</h1>
-        {showStandfirst && article.summary && (
-          // Stored summary HTML, rendered as written.
-          <div
-            className="max-w-[52rem] font-serif text-standfirst text-primary [&_p]:m-0"
-            dangerouslySetInnerHTML={{ __html: article.summary }}
+      <div className="mx-auto max-w-[52rem] min-[1140px]:max-w-[68rem]">
+        {/* Title, summary and byline span the full width of the image below. */}
+        <header className="flex flex-col gap-4">
+          {article.kicker && <p className="text-kicker text-accent">{article.kicker}</p>}
+          {/* Pretty wrapping (not balance) so the title fills the width. */}
+          <h1 className="font-slab text-headline-1 [text-wrap:pretty]">{article.title}</h1>
+          {showStandfirst && article.summary && (
+            // Stored summary HTML, rendered as written.
+            <div
+              className="font-serif text-standfirst text-primary [&_p]:m-0"
+              dangerouslySetInnerHTML={{ __html: article.summary }}
+            />
+          )}
+          <Byline
+            author={article.author}
+            publishedAt={article.publishedAt}
+            linkAuthor
+            className="flex flex-col gap-1 border-t border-rule pt-3"
           />
+        </header>
+
+        {article.imageUrl && (
+          <figure className="mt-8">
+            <img
+              src={article.imageUrl}
+              alt=""
+              style={focusStyle(article.imageUrl)}
+              className="aspect-video w-full object-cover"
+            />
+          </figure>
         )}
-      </header>
 
-      {article.imageUrl && (
-        <figure className="mx-auto mt-8 max-w-[52rem] min-[1140px]:max-w-[76rem]">
-          <img src={article.imageUrl} alt="" className="aspect-video w-full object-cover" />
-        </figure>
-      )}
+        <div className={`mt-8 flex flex-col gap-12 ${columns}`}>
+          {/* Stored article HTML, rendered exactly as written. */}
+          <div
+            className="article-body"
+            dangerouslySetInnerHTML={{ __html: article.body }}
+          />
 
-      <div className="mx-auto mt-8 grid max-w-[65ch] gap-x-10 gap-y-8 border-t border-rule pt-4 min-[1140px]:max-w-[76rem] min-[1140px]:grid-cols-[minmax(15rem,1fr)_minmax(0,42rem)_minmax(15rem,1fr)]">
-        <Byline
-          author={article.author}
-          publishedAt={article.publishedAt}
-          linkAuthor
-          className="flex flex-col gap-1 min-[1140px]:justify-self-end min-[1140px]:text-right"
-        />
-
-        {/* Stored article HTML, rendered exactly as written. */}
-        <div
-          className="article-body"
-          dangerouslySetInnerHTML={{ __html: article.body }}
-        />
-
-        {related.length > 0 && (
-          <aside aria-labelledby="related" className="min-[1140px]:max-w-80">
-            <h2 id="related" className="border-t border-rule pt-3 font-slab text-headline-4 min-[1140px]:border-t-0 min-[1140px]:pt-0">
-              More articles
-            </h2>
-            <ul className="mt-2">
-              {related.map((card) => {
-                const date = formatDate(card.publishedAt);
-                return (
-                  <li key={card.slug} className="flex items-start gap-3 border-b border-rule py-3">
-                    <div className="min-w-0 flex-1">
-                      <Link
-                        to={cardHref(card)}
-                        className="font-slab font-semibold underline-offset-4 hover:underline"
-                      >
-                        {card.title}
-                      </Link>
-                      {date && card.publishedAt && (
-                        <p className="mt-1 text-meta text-secondary">
-                          <time dateTime={card.publishedAt}>{date}</time>
+          {related.length > 0 && (
+            <aside
+              ref={sidebar.ref}
+              aria-labelledby="related"
+              style={{ top: sidebar.top }}
+              className="min-[1140px]:sticky min-[1140px]:self-start"
+            >
+              <h2
+                id="related"
+                className="border-t border-rule pt-3 font-slab text-headline-4 min-[1140px]:border-t-0 min-[1140px]:pt-0"
+              >
+                More articles
+              </h2>
+              <ul className="mt-2">
+                {related.map((card) => (
+                  <li key={card.slug} className="border-b border-rule">
+                    <Link
+                      to={cardHref(card)}
+                      className="group flex items-start gap-4 py-3 transition-colors hover:bg-hover focus-visible:bg-hover"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p
+                          title={card.title}
+                          className="line-clamp-2 font-slab font-semibold group-hover:line-clamp-none group-focus-visible:line-clamp-none"
+                        >
+                          {card.title}
                         </p>
+                        {card.author && (
+                          <p className="mt-1 text-meta text-secondary">{card.author.name}</p>
+                        )}
+                      </div>
+                      {card.imageUrl && (
+                        <img
+                          src={card.imageUrl}
+                          alt=""
+                          style={focusStyle(card.imageUrl)}
+                          loading="lazy"
+                          decoding="async"
+                          className="aspect-square w-20 shrink-0 bg-surface object-cover"
+                        />
                       )}
-                    </div>
-                    <CardImage card={card} className="w-20 shrink-0" />
+                    </Link>
                   </li>
-                );
-              })}
-            </ul>
-          </aside>
-        )}
+                ))}
+              </ul>
+              {/* Below the rail width, the left top ad sits here; the others
+                  go above the footer (routes/layout.tsx). */}
+              <AdStack ads={[ads.left_top]} />
+            </aside>
+          )}
+        </div>
       </div>
     </article>
   );

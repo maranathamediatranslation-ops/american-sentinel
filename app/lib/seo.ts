@@ -1,6 +1,7 @@
 import type { MetaDescriptor } from "react-router";
 
 import { stripHtml } from "./format";
+import { plainImageUrl } from "./images";
 
 export const SITE_NAME = "American Sentinel";
 export const SITE_URL = (
@@ -51,7 +52,8 @@ export function seo({
       { property: "og:description", content: desc },
     );
   }
-  if (image) tags.push({ property: "og:image", content: image });
+  const ogImage = plainImageUrl(image);
+  if (ogImage) tags.push({ property: "og:image", content: ogImage });
   if (noindex) tags.push({ name: "robots", content: "noindex" });
   return tags;
 }

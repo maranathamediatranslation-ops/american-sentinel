@@ -1,6 +1,6 @@
 import "~/admin.css";
 
-import { BookOpen, ExternalLink, FileText, LayoutDashboard, Link2, LogOut, Video } from "lucide-react";
+import { BookOpen, ExternalLink, FileText, LayoutDashboard, Link2, LogOut, Megaphone, Video } from "lucide-react";
 import { Form, NavLink, Outlet, redirect } from "react-router";
 
 import type { Route } from "./+types/layout";
@@ -37,6 +37,7 @@ const nav: { to: string; label: string; icon: typeof FileText; needs: Permission
   { to: "/admin/books", label: "Books", icon: BookOpen, needs: "manage_content" },
   { to: "/admin/presentations", label: "Presentations", icon: Video, needs: "manage_content" },
   { to: "/admin/links", label: "Links", icon: Link2, needs: "manage_settings" },
+  { to: "/admin/ads", label: "Ads", icon: Megaphone, needs: "manage_settings" },
 ];
 
 export default function AdminLayout({ loaderData }: Route.ComponentProps) {

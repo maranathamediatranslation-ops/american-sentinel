@@ -4,13 +4,13 @@ import { data, Form, Link, redirect, useLocation, useNavigation, useSearchParams
 import type { Route } from "./+types/content-edit";
 import { DeleteButton } from "~/components/admin/DeleteButton";
 import { ImageField, resolveImageField } from "~/components/admin/ImageField";
+import { RichTextEditor } from "~/components/admin/RichTextEditor";
 import { statusLabel } from "~/components/admin/StatusBadge";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
-import { Textarea } from "~/components/ui/textarea";
 import {
   checkImage,
   contentOptions,
@@ -321,23 +321,28 @@ export default function ContentEdit({ loaderData, actionData }: Route.ComponentP
 
         <div className="grid gap-2">
           <Label htmlFor="summary">Summary</Label>
-          <Textarea id="summary" name="summary" defaultValue={record.summary} rows={4} aria-describedby="summary-hint" />
+          <RichTextEditor
+            id="summary"
+            name="summary"
+            label="Summary"
+            defaultValue={record.summary}
+            toolbar="basic"
+            minHeight="6rem"
+            describedBy="summary-hint"
+          />
           <p id="summary-hint" className="text-sm text-muted-foreground">
-            Shown on cards and in search results. HTML is allowed.
+            Shown under the title, on cards and in search results.
           </p>
         </div>
         <div className="grid gap-2">
           <Label htmlFor="body">{record.type === "presentation" ? "Description" : "Text"}</Label>
-          <Textarea
+          <RichTextEditor
             id="body"
             name="body"
-            defaultValue={record.body}
-            rows={20}
-            className="font-mono text-sm"
-            aria-describedby="body-hint"
-          />
+            label={record.type === "presentation" ? "Description" : "Text"}
+            defaultValue={record.body} describedBy="body-hint" />
           <p id="body-hint" className="text-sm text-muted-foreground">
-            HTML, saved exactly as entered.
+            Text you don’t change is saved exactly as it was. Use HTML for anything the toolbar doesn’t cover.
           </p>
         </div>
 

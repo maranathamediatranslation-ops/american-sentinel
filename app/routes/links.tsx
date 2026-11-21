@@ -2,6 +2,7 @@ import type { Route } from "./+types/links";
 import { PageHeader } from "~/components/PageHeader";
 import { listLinks, paths } from "~/lib/content";
 import { seo } from "~/lib/seo";
+import { focusStyle } from "~/lib/images";
 
 export async function loader() {
   return { links: await listLinks() };
@@ -28,6 +29,7 @@ export default function Links({ loaderData }: Route.ComponentProps) {
                 <img
                   src={link.imageUrl}
                   alt=""
+                  style={focusStyle(link.imageUrl)}
                   loading="lazy"
                   className="aspect-video w-28 shrink-0 self-start object-cover sm:w-40"
                 />

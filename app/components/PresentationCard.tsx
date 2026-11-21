@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import { cardHref, type Card } from "~/lib/content";
 import { formatDate } from "~/lib/format";
+import { focusStyle } from "~/lib/images";
 
 export function PresentationCard({ card }: { card: Card }) {
   const date = formatDate(card.publishedAt);
@@ -12,6 +13,7 @@ export function PresentationCard({ card }: { card: Card }) {
           <img
             src={card.imageUrl}
             alt=""
+            style={focusStyle(card.imageUrl)}
             loading="lazy"
             className="absolute inset-0 h-full w-full object-cover"
           />

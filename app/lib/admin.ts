@@ -1,6 +1,7 @@
 // Admin data access. Browser only: every call runs with the signed-in user's
 // session, so Row Level Security decides what they may read and change.
-import { IMAGE_BUCKET, isStoragePath } from "./images";
+import { isAdPage, isAdSlot, type AdKind, type AdPage, type AdSlot } from "./ads";
+import { IMAGE_BUCKET, isStoragePath, splitImage } from "./images";
 import { getSupabase } from "./supabase";
 
 type Row = Record<string, unknown>;
@@ -350,6 +351,117 @@ export async function deleteLink(id: number, imagePath: string | null) {
 }
 
 // ---------------------------------------------------------------------------
+// Ads (table public.ads, see supabase/migrations/20261121000000_ads.sql)
+// ---------------------------------------------------------------------------
+
+export type AdRecord = {
+  id: number | null;
+  name: string;
+  kind: AdKind;
+  slot: AdSlot;
+  imagePath: string | null;
+  bannerImagePath: string | null;
+  linkUrl: string;
+  altText: string;
+  embedHtml: string;
+  pages: AdPage[];
+  active: boolean;
+  // Dates as YYYY-MM-DD (whole days, site time = UTC like publish dates).
+  startsOn: string;
+  endsOn: string;
+  position: number;
+};
+
+export function emptyAd(): AdRecord {
+  return {
+    id: null,
+    name: "",
+    kind: "image",
+    slot: "left_top",
+    imagePath: null,
+    bannerImagePath: null,
+    linkUrl: "",
+    altText: "",
+    embedHtml: "",
+    pages: [],
+    active: true,
+    startsOn: "",
+    endsOn: "",
+    position: 0,
+  };
+}
+
+function toAd(r: Row): AdRecord {
+  return {
+    id: Number(r.id),
+    name: String(r.name ?? ""),
+    kind: r.kind === "embed" ? "embed" : "image",
+    slot: isAdSlot(r.slot) ? r.slot : "left_top",
+    imagePath: (r.image_path as string) ?? null,
+    bannerImagePath: (r.banner_image_path as string) ?? null,
+    linkUrl: String(r.link_url ?? ""),
+    altText: String(r.alt_text ?? ""),
+    embedHtml: String(r.embed_html ?? ""),
+    pages: Array.isArray(r.pages) ? (r.pages as unknown[]).filter(isAdPage) : [],
+    active: r.active !== false,
+    startsOn: typeof r.starts_at === "string" ? r.starts_at.slice(0, 10) : "",
+    // Stored as the moment after the last day (see saveAd); show that last day.
+    endsOn:
+      typeof r.ends_at === "string"
+        ? new Date(Date.parse(r.ends_at) - 86_400_000).toISOString().slice(0, 10)
+        : "",
+    position: Number(r.position ?? 0),
+  };
+}
+
+export async function listAds(): Promise<AdRecord[]> {
+  const { data, error } = await db().from("ads").select("*").order("slot").order("position");
+  if (error) fail("ads", error);
+  return (data as Row[]).map(toAd);
+}
+
+export async function getAd(id: number): Promise<AdRecord | null> {
+  const { data, error } = await db().from("ads").select("*").eq("id", id).maybeSingle();
+  if (error) fail(`ads (${id})`, error);
+  return data ? toAd(data as Row) : null;
+}
+
+export async function saveAd(ad: AdRecord): Promise<number> {
+  const values: Row = {
+    name: ad.name,
+    kind: ad.kind,
+    slot: ad.slot,
+    image_path: ad.imagePath,
+    banner_image_path: ad.bannerImagePath,
+    link_url: ad.linkUrl || null,
+    alt_text: ad.altText || null,
+    embed_html: ad.embedHtml || null,
+    pages: ad.pages,
+    active: ad.active,
+    // Starts at the beginning of its first day, ends after its last day.
+    starts_at: ad.startsOn ? `${ad.startsOn}T00:00:00Z` : null,
+    ends_at: ad.endsOn ? new Date(Date.parse(`${ad.endsOn}T00:00:00Z`) + 86_400_000).toISOString() : null,
+    position: ad.position,
+  };
+  if (ad.id) {
+    const { error } = await db().from("ads").update(values).eq("id", ad.id);
+    if (error) fail("Saving ad", error);
+    return ad.id;
+  }
+  const { data, error } = await db().from("ads").insert(values).select("id").single();
+  if (error) fail("Creating ad", error);
+  return Number((data as Row).id);
+}
+
+export async function deleteAd(id: number) {
+  const ad = await getAd(id);
+  const { error } = await db().from("ads").delete().eq("id", id);
+  if (error) fail("Deleting ad", error);
+  await removeImage(ad?.imagePath ?? null);
+  await removeImage(ad?.bannerImagePath ?? null);
+}
+
+// ---------------------------------------------------------------------------
 // Options for selects
 // ---------------------------------------------------------------------------
 
@@ -402,7 +514,9 @@ export async function uploadImage(file: File, folder: string): Promise<string> {
 }
 
 // Removes an uploaded image. Full URLs (images hosted elsewhere) are left alone.
-export async function removeImage(path: string | null) {
+export async function removeImage(value: string | null) {
+  // Drop the focal point fragment (see images.ts) to get the storage path.
+  const path = splitImage(value).path;
   if (!isStoragePath(path)) return;
   await db().storage.from(IMAGE_BUCKET).remove([path]);
 }

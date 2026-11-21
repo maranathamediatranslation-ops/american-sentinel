@@ -6,6 +6,7 @@ import { Byline } from "~/components/Byline";
 import { VideoPlayer } from "~/components/VideoPlayer";
 import { getItem, getPresentation, listSeriesPresentations, paths } from "~/lib/content";
 import { seo } from "~/lib/seo";
+import { focusStyle } from "~/lib/images";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const item = await getItem("presentation", params.slug);
@@ -43,7 +44,7 @@ export default function PresentationPage({ loaderData }: Route.ComponentProps) {
             {video?.videoRef ? (
               <VideoPlayer video={video} title={item.title} poster={item.imageUrl} />
             ) : (
-              item.imageUrl && <img src={item.imageUrl} alt="" className="aspect-video w-full object-cover" />
+              item.imageUrl && <img src={item.imageUrl} alt="" style={focusStyle(item.imageUrl)} className="aspect-video w-full object-cover" />
             )}
             <Byline author={item.author} publishedAt={item.publishedAt} linkAuthor />
             {item.summary && (

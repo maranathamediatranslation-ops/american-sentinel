@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { videoThumbnail, type Presentation } from "~/lib/content";
+import { focusStyle } from "~/lib/images";
 
 type Props = {
   video: Pick<Presentation, "videoProvider" | "videoRef">;
@@ -36,6 +37,7 @@ export function VideoPlayer({ video, title, poster }: Props) {
           <img
             src={poster ?? videoThumbnail(video) ?? undefined}
             alt=""
+            style={focusStyle(poster)}
             className="absolute inset-0 h-full w-full object-cover"
           />
           <span className="absolute start-4 bottom-4 inline-flex items-center gap-2 rounded-control bg-masthead px-4 py-3 text-label text-on-masthead transition-colors group-hover:bg-accent group-hover:text-on-accent">

@@ -28,7 +28,7 @@
 
   --as-wordmark: 2.25rem;
   --as-display: 2rem;
-  --as-headline-1: 2rem;
+  --as-headline-1: 1.75rem;
   --as-headline-2: 1.5rem;
   --as-headline-4: 1.125rem;
   --as-standfirst: 1.125rem;
@@ -65,12 +65,12 @@
   :root {
     --as-wordmark: 3.5rem;
     --as-display: 2.75rem;
-    --as-headline-1: 2.625rem;
-    --as-headline-2: 1.75rem;
+    --as-headline-1: 2.25rem;
+    --as-headline-2: 1.5rem;
     --as-headline-4: 1.25rem;
-    --as-standfirst: 1.25rem;
-    --as-body: 1.125rem;
-    --as-quote: 1.0625rem;
+    --as-standfirst: 1.125rem;
+    --as-body: 1.0625rem;
+    --as-quote: 1rem;
     --as-nav: 1.125rem;
   }
 }
